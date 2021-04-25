@@ -10,6 +10,12 @@ ol
     - @result.each do |paketnamn| 
         li 
             p = paketnamn["paketnamn"]
+            
+            - @result2.each do |additionnamn| 
+                 form action="additions/paket" method="POST"
+                    input type="checkbox" name="content" value="#{additionnamn["id"]}"
+                    input type="submit" value="spara"
+
             form action="paket/delete" method="POST" 
                 input type="hidden" name="number" value="#{paketnamn["id"]}"
                 input type="submit" value="Delete"
@@ -32,10 +38,6 @@ ol
     - @result2.each do |additionnamn| 
         li 
             p =additionnamn["additionnamn"]
-
-            input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"
-            input type="checkbox" id="vehicle2" name="vehicle2" value="Car"
-            input type="checkbox" id="vehicle3" name="vehicle3" value="Boat"
 
             form action="addition/delete" method="POST" 
                 input type="hidden" name="number" value="#{additionnamn["id"]}"
