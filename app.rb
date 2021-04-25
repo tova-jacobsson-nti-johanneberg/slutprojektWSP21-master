@@ -8,6 +8,10 @@ get('/') do
     slim(:index)
 end
 
+get('/konto') do
+  slim(:konto)
+end
+ 
 get('/admin') do
   id = session[:id].to_i
   db = SQLite3::Database.new('databas/databas.db')
@@ -26,9 +30,7 @@ get('/register') do
     slim(:register)
 end
 
-get('/konto') do
-  slim(:konto)
-end
+
 
 get('/kontakt') do
   slim(:kontakt)
@@ -91,6 +93,15 @@ post('/login') do
     redirect('/admin')
   end 
 
+  post('/additions/paket') do 
+    additionnamn = params[:additionnamn]
+    id = session[:id].to_i
+    db = SQLite3::Database.new('databas/databas.db')
+    db.execute("INSERT INTO additions (additionnamn) VALUES (?)",additionnamn)
+    redirect('/admin')
+  end 
+
+
   post('/paket/delete') do 
     paketnamn = params[:paketnamn]
     id = session[:id].to_i
@@ -119,13 +130,10 @@ post('/login') do
     additionnamn = params[:additionnamn]
     id = session[:id].to_i
     db = SQLite3::Database.new('databas/databas.db')
-    db.execute("UPDATE  (additionnamn) VALUES (?)",additionnamn)
+    db.execute("UPDATE additions  (additionnamn) VALUES (?)",additionnamn)
     redirect('/admin')
   end 
-  
- 
-  
-  
+
   post('/users/new') do
     username = params[:username]
     password = params[:password]
@@ -141,7 +149,8 @@ post('/login') do
     end 
   end 
 
-  post('/konto') do 
+  post('/uppgifter') do 
+    id = session[:id].to_i
     username = params[:username]
     namn = params[:namn]
     gata = params[:adress]
@@ -150,10 +159,7 @@ post('/login') do
     ort = params[:ort]
     email = params[:email]
     db = SQLite3::Database.new('databas/databas.db')
-    db.results_as_hash = true 
-   # result = db.execute("SELECT * FROM users WHERE username = ?", username).first
-    #pwdigest = result["pwdigest"]
-   #id = result["id"]
-   
+    db.execute("INSERT INTO user_info (namn, gata, telefon, postnr, ort, email) WHERE user_id = ",namn, gata, telefon, postnr, ort, email)
+ 
   end 
 
